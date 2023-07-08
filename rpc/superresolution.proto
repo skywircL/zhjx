@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package= "./rpc";
+
+service SuperResolution {
+    rpc SuperResolutionFunc (SuperResolutionRequest) returns (SuperResolutionResponse) {}
+    rpc PersonBank (PersonBankRequest) returns (PersonBankResponse) {}
+
+}
+
+message SuperResolutionRequest {
+    string image_uri = 1;
+}
+
+message SuperResolutionResponse {
+    bool error = 1;
+    string message = 2;
+}
+
+message PersonBankRequest{
+
+}
+message PersonBankResponse{
+    bool error = 1;
+    string message = 2;
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "./rpc";
+
+service AbnormalDetection { //行人检测rpc
+  rpc Abnormal (AbnormalRequest) returns (stream AbnormalResponse) {}  //异常检测rpc，使用传入拉流url，持续返回拉流结果
+  rpc AbnormalChangeFlag (AbnormalFlagParam) returns (ChangeFlagResponse) {}  //改变标志位flag，停止异常检测
+}
+
+message AbnormalResponse{
+  float anomaly_score = 1;
+  string anomaly_camera_name = 2;
+}
+
+message AbnormalRequest{
+  repeated string camera_name=1;
+  repeated string rtsp_url = 2;
+}
+
+message AbnormalFlagParam{
+  bool flag=1;
+}
+
+message ChangeFlagResponse {
+  bool error = 1;
+  string message = 2;
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package= "./rpc";
+
+service Backtracking { //视频回溯rpc
+  rpc Backtracking (BacktrackingRequest) returns (stream BacktrackingResponse) {}
+    rpc BacktrackingChangeFlag (BacktrackingFlagParam) returns (BacktrackingFlagResponse) {}  //改变标志位flag，停止视频回溯
+}
+
+message BacktrackingResponse{
+  float anomaly_score = 1;
+  string anomaly_camera_name = 2;
+}
+
+message BacktrackingRequest{
+  string camera_name=1;
+  string rmtp=2;
+  repeated string video_path = 3;
+}
+
+message BacktrackingFlagParam{
+  bool flag=1;
+}
+
+message BacktrackingFlagResponse {
+  bool error = 1;
+  string message = 2;
+}
