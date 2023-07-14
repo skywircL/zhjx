@@ -22,7 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FfmpegClient interface {
-	PersonDetection(ctx context.Context, in *CameraIp, opts ...grpc.CallOption) (*FfmpegResponse, error)
 	VideoStream(ctx context.Context, in *VideoStreamStruct, opts ...grpc.CallOption) (*VideoStreamResponse, error)
 	ChangeFfmpegFlag(ctx context.Context, in *FlagParam, opts ...grpc.CallOption) (*ChangeFlagFfmpegResponse, error)
 }
@@ -33,15 +32,6 @@ type ffmpegClient struct {
 
 func NewFfmpegClient(cc grpc.ClientConnInterface) FfmpegClient {
 	return &ffmpegClient{cc}
-}
-
-func (c *ffmpegClient) PersonDetection(ctx context.Context, in *CameraIp, opts ...grpc.CallOption) (*FfmpegResponse, error) {
-	out := new(FfmpegResponse)
-	err := c.cc.Invoke(ctx, "/Ffmpeg/PersonDetection", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *ffmpegClient) VideoStream(ctx context.Context, in *VideoStreamStruct, opts ...grpc.CallOption) (*VideoStreamResponse, error) {
@@ -66,7 +56,6 @@ func (c *ffmpegClient) ChangeFfmpegFlag(ctx context.Context, in *FlagParam, opts
 // All implementations must embed UnimplementedFfmpegServer
 // for forward compatibility
 type FfmpegServer interface {
-	PersonDetection(context.Context, *CameraIp) (*FfmpegResponse, error)
 	VideoStream(context.Context, *VideoStreamStruct) (*VideoStreamResponse, error)
 	ChangeFfmpegFlag(context.Context, *FlagParam) (*ChangeFlagFfmpegResponse, error)
 	mustEmbedUnimplementedFfmpegServer()
@@ -76,9 +65,6 @@ type FfmpegServer interface {
 type UnimplementedFfmpegServer struct {
 }
 
-func (UnimplementedFfmpegServer) PersonDetection(context.Context, *CameraIp) (*FfmpegResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PersonDetection not implemented")
-}
 func (UnimplementedFfmpegServer) VideoStream(context.Context, *VideoStreamStruct) (*VideoStreamResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VideoStream not implemented")
 }
@@ -96,24 +82,6 @@ type UnsafeFfmpegServer interface {
 
 func RegisterFfmpegServer(s grpc.ServiceRegistrar, srv FfmpegServer) {
 	s.RegisterService(&Ffmpeg_ServiceDesc, srv)
-}
-
-func _Ffmpeg_PersonDetection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CameraIp)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(FfmpegServer).PersonDetection(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/Ffmpeg/PersonDetection",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FfmpegServer).PersonDetection(ctx, req.(*CameraIp))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Ffmpeg_VideoStream_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -159,10 +127,6 @@ var Ffmpeg_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "Ffmpeg",
 	HandlerType: (*FfmpegServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "PersonDetection",
-			Handler:    _Ffmpeg_PersonDetection_Handler,
-		},
 		{
 			MethodName: "VideoStream",
 			Handler:    _Ffmpeg_VideoStream_Handler,

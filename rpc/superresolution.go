@@ -31,9 +31,9 @@ const (
 func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) error {
 	//todo 出发错误返回时得先清空文件夹
 	//先将文件夹中资源释放
-	_ = deleteFiles("../demosr/inputs")
+	_ = deleteFiles("../../demosr/inputs")
 
-	_ = deleteFiles("../demosr/outputs")
+	_ = deleteFiles("../../demosr/outputs")
 
 	conn, err := grpc.Dial(address, grpc.WithBlock(), grpc.WithInsecure())
 
@@ -52,7 +52,7 @@ func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) e
 		var imagePath model.SuperResolution //这个指向的是一个文件夹，把文件夹下的照片复制到input文件夹下
 		dao.DB.Model(model.SuperResolution{}).Where("image_name = ?", v).Find(&imagePath)
 		//通过imagePath将该路径下的所有文件移到input文件夹下
-		err := copyFiles(imagePath.Path, "../demosr/inputs") //todo 得改参数
+		err := copyFiles(imagePath.Path, "../../demosr/inputs") //todo 得改参数
 		if err != nil {
 			return err
 		}
@@ -66,12 +66,12 @@ func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) e
 		if result.Error { //没问题就转移
 			//todo 通过返回的调用状态来判断是否应该将图从output转移到query文件夹下
 			//还得创建文件夹
-			err := os.MkdirAll("../fast_reid/query/"+v, os.ModePerm)
+			err := os.MkdirAll("../../fast_reid/query/"+v, os.ModePerm)
 			if err != nil {
 				return err
 			}
 
-			err = copyFiles(imagePath.Path, "../fast_reid/query/"+v)
+			err = copyFiles(imagePath.Path, "../../fast_reid/query/"+v)
 			if err != nil {
 				return err
 			}
@@ -88,7 +88,7 @@ func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) e
 			defer src.Close()
 
 			// 构建目标文件路径
-			destinationPath := "../demosr/inputs/" + file.Filename
+			destinationPath := "../../demosr/inputs/" + file.Filename
 			NewFile, err := os.Create(destinationPath)
 			if err != nil {
 				return err
@@ -110,7 +110,7 @@ func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) e
 			if result.Error { //没问题就转移
 				// todo 通过返回的调用状态来判断是否应该将图从output转移到query文件夹下
 				//先创建文件夹
-				err = os.MkdirAll("../Yolov5-Deepsort-Fastreid/fast_reid/query/temp", os.ModePerm)
+				err = os.MkdirAll("../../Yolov5DeepsortFastreid/fast_reid/query/temp", os.ModePerm)
 				if err != nil {
 					return err
 				}
@@ -118,7 +118,7 @@ func SuperRes(imageName []string, IsYoloX bool, files []*multipart.FileHeader) e
 				//等待处理
 				time.Sleep(5 * time.Second)
 
-				err := copyFiles("../demosr/outputs/restored_imgs", "../Yolov5-Deepsort-Fastreid/fast_reid/query/temp")
+				err := copyFiles("../../demosr/outputs/restored_imgs", "../../Yolov5DeepsortFastreid/fast_reid/query/temp")
 				if err != nil {
 					return err
 				}
@@ -156,6 +156,7 @@ func PersonBank() error {
 	if !bank.Error {
 		return errors.New(bank.Message)
 	}
+	//生成成功后清空query文件夹
 
 	return nil
 }
@@ -219,11 +220,11 @@ func deleteFiles(folderPath string) error {
 				return err
 			}
 		}
-		err = os.MkdirAll("../demosr/inputs", os.ModePerm)
+		err = os.MkdirAll("../../demosr/inputs", os.ModePerm)
 		if err != nil {
 			return err
 		}
-		err = os.MkdirAll("../demosr/outputs", os.ModePerm)
+		err = os.MkdirAll("../../demosr/outputs", os.ModePerm)
 		if err != nil {
 			return err
 		}

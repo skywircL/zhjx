@@ -8,13 +8,13 @@ service AbnormalDetection { //行人检测rpc
 }
 
 message AbnormalResponse{
-  float anomaly_score = 1;
+   float anomaly_score = 1;
   string anomaly_camera_name = 2;
 }
 
 message AbnormalRequest{
-  repeated string camera_name=1;
-  repeated string rtsp_url = 2;
+   string camera_name=1;
+   string rtsp_url = 2;
 }
 
 message AbnormalFlagParam{

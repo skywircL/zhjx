@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option go_package= "./rpc";
+
+service Yolox {
+  rpc PersonDetection (CameraIp) returns (YoloxResponse) {}  //产生图片
+  rpc ChangeYoloxFlag (YoloxFlagParam) returns (ChangeYoloxResponse) {}  //拉取视频流,并推流
+}
+
+message CameraIp {// 传的是ip，什么地点的什么设备
+  repeated string location = 1;
+  repeated string camera_ip = 2;
+  repeated string stream = 3;
+   string save_path = 4;
+}
+
+message YoloxResponse {
+  bool error = 1;
+  string message = 2;
+}
+
+message YoloxFlagParam{
+  bool flag=1;
+}
+
+message ChangeYoloxResponse {
+  bool error = 1;
+  string message = 2;
+}

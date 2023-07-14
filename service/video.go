@@ -39,7 +39,7 @@ func GetVideo(deviceName string, personName []string, startTime string, endTime 
 	}
 
 	//清空query文件夹
-	err = deleteFiles("../Yolov5-Deepsort-Fastreid/fast_reid/query")
+	err = DeleteFiles("../Yolov5-Deepsort-Fastreid/fast_reid/query")
 	if err != nil {
 		log.Println(err)
 		return
@@ -153,7 +153,7 @@ func copyFiles(sourcePath, destinationPath string) error {
 	return nil
 }
 
-func deleteFiles(folderPath string) error {
+func DeleteFiles(folderPath string) error {
 	err := filepath.Walk(folderPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

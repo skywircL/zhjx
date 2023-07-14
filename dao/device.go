@@ -29,3 +29,8 @@ func DeleteDevice(name string) error {
 func ChangeDevice(name string, location string, ip string, index string) error {
 	return DB.Model(&model.DeviceIp{}).Where("ip = ?", ip).UpdateColumn("device_location", location).UpdateColumn("device_name", name).UpdateColumn("index", index).Error
 }
+
+func QueryDeviceDisPlaying() (device []model.DeviceIp, err error) {
+	err = DB.Model(&model.DeviceIp{}).Where("is_display = ?", 1).Find(&device).Error
+	return
+}

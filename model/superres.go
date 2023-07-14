@@ -19,5 +19,4 @@ type ReturnSuperResolution struct {
 	gorm.Model
 	Path      string `json:"path"`
 	ImageName string `json:"image_name"`
-	CoverImg  []byte `json:"cover_img"`
 }

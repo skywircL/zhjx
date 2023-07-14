@@ -30,3 +30,24 @@ func SuRes(c *gin.Context) {
 	}
 	util.OK(c)
 }
+
+func AddPersonBank(c *gin.Context) {
+	form, _ := c.MultipartForm()
+	personName := form.Value["personName"]
+	files := form.File["images"]
+	IsYoloX := form.Value["IsYoloX"]
+
+	isYoloX, err := strconv.ParseBool(IsYoloX[0])
+	if err != nil {
+		util.ParamError(c)
+		return
+	}
+
+	err = service.CreatePersonBank(files, personName, isYoloX)
+	if err != nil {
+		util.HandleError(c, err)
+		return
+	}
+	util.OK(c)
+
+}

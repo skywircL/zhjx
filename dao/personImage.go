@@ -28,3 +28,8 @@ func DeleteImage(PersonName string) error {
 	err := DB.Where("image_name=?", PersonName).Delete(&model.SuperResolution{}).Error
 	return err
 }
+
+func QueryOnlyImgInfo(personName string) (err error, findImg model.SuperResolution) {
+	err = DB.Model(&model.SuperResolution{}).Find(&findImg).Where("image_name=?", personName).Error
+	return
+}

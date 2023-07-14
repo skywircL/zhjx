@@ -7,6 +7,6 @@
 package model
 
 type AbnormalRes struct {
-	CameraName []string `json:"camera_name"`
-	RtspUrl    []string `json:"rtsp_url"`
+	CameraName string `json:"camera_name"`
+	RtspUrl    string `json:"rtsp_url"`
 }

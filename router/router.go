@@ -15,6 +15,7 @@ import (
 func RunRouter() {
 	r := gin.Default()
 	r.StaticFS("/static", http.Dir("../absaveimg"))
+	r.StaticFS("/img", http.Dir("../../PersonImageDatabase"))
 	r.POST("/monitor/super/resolution", controller.SuRes) //超分接口
 	//一个非超分的接口
 
@@ -60,6 +61,12 @@ func RunRouter() {
 
 	//登录接口
 	r.POST("/user/login", controller.Login)
+
+	//退出登录释放资源接口
+	r.DELETE("/user/logout", controller.Logout)
+
+	//非超分生成personBank接口
+	r.POST("/monitor/add/personBank", controller.AddPersonBank)
 
 	_ = r.Run(":8080")
 }

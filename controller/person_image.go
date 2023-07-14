@@ -12,7 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	"log"
+	"net/http"
 	"os"
+	"time"
 	"videoStream/service"
 	"videoStream/util"
 )
@@ -20,6 +22,9 @@ import (
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1048576,
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
 }
 
 func WsGETImage(c *gin.Context) {
@@ -46,6 +51,7 @@ func WsGETImage(c *gin.Context) {
 					// 发送新图片数据给前端
 					data, err := readFile(event.Name)
 					log.Println(event.Name)
+
 					if err != nil {
 						log.Println(err)
 						continue
@@ -59,7 +65,7 @@ func WsGETImage(c *gin.Context) {
 		}
 	}()
 
-	err = watcher.Add("../yolox/per_img")
+	err = watcher.Add("../../yolox/per_img")
 
 	if err != nil {
 		return
@@ -71,11 +77,15 @@ func WsGETImage(c *gin.Context) {
 }
 
 func readFile(path string) ([]byte, error) {
+	time.Sleep(500 * time.Millisecond) //等待文件创建完成
 	bytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
+	//data, err := os.ReadFile(path)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	return bytes, nil
 }

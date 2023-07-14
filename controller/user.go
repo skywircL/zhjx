@@ -48,3 +48,12 @@ func Login(c *gin.Context) {
 	util.OKWithData(c, token)
 
 }
+
+func Logout(c *gin.Context) {
+	err := service.ReleaseResources()
+	if err != nil {
+		util.HandleError(c, err)
+		return
+	}
+	util.OK(c)
+}

@@ -30,3 +30,9 @@ type AbnormalRcReturn struct {
 	DeviceName string `json:"device_name"`
 	Time       string `json:"time"`
 }
+
+type QuitFfmpeg struct {
+	gorm.Model
+	RtmpUrl string `json:"rtmp_url"`
+	PId     int    `json:"p_id"`
+}

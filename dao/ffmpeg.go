@@ -8,8 +8,8 @@ package dao
 
 import "videoStream/model"
 
-func GetStreamPid() (err error, Pid []model.FfmpegStatus) {
-	err = DB.Model(&model.FfmpegStatus{}).Where("status=1").Find(&Pid).Error
+func GetStreamPid() (err error, Pid []model.QuitFfmpeg) {
+	err = DB.Model(&model.QuitFfmpeg{}).Find(&Pid).Error
 	return
 
 }

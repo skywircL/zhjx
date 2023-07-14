@@ -31,7 +31,7 @@ func MySQLInit() {
 	}
 	DB = db
 
-	AutoMigrateAll(model.DeviceIp{}, model.FfmpegStatus{}, model.SuperResolution{}, model.Video{}, model.AbImgRecord{}, model.User{})
+	AutoMigrateAll(model.DeviceIp{}, model.FfmpegStatus{}, model.SuperResolution{}, model.Video{}, model.AbImgRecord{}, model.User{}, model.QuitFfmpeg{})
 }
 
 func AutoMigrateAll(is ...interface{}) {
